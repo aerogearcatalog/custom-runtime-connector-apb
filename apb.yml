@@ -1,0 +1,33 @@
+version: 1.0
+name: custom-runtime-connector-apb
+description: Custom Runtime Connector
+bindable: False
+async: optional
+tags:
+  - mobile-service
+metadata:
+  displayName: Custom Runtime Connector
+  console.openshift.io/iconClass: fa fa-plug
+  documentationUrl: "http://www.aerogear.org/custom-runtime-connector/documentation.html"
+  providerDisplayName: "Red Hat, Inc."
+  dependencies: []
+  serviceName: custom-runtime-connector
+plans:
+  - name: default
+    description: This default plan deploys custom-runtime-connector-apb
+    free: True
+    metadata: {}
+    parameters:
+    - name: SERVICE_NAME
+      required: True
+      type: string
+      title: Service Name
+    - name: SERVICE_URI
+      required: True
+      type: string
+      title: Service URL
+    - name: SERVICE_CONFIG
+      required: False
+      type: string
+      display_type: textarea
+      title: Service JSON Configuration
