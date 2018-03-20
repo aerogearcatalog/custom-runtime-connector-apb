@@ -34,4 +34,4 @@
       type: 'Custom Runtime Connector'
       name: '{{ SERVICE_NAME }}'
       uri: '{{ SERVICE_URI }}'
-      config: '{{ svc_json_config | to_json }}'
+      config: '{{ svc_json_config | to_nice_json }}'
