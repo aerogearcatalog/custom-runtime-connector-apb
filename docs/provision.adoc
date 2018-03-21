@@ -1,0 +1,55 @@
+[[custom-runtime-connector-service]]
+= Custom Runtime Connector
+
+The Custom Runtime Connector (CRC) allows an existing custom service to be exposed to a mobile application.
+This creates a https://docs.openshift.com/enterprise/3.2/dev_guide/configmaps.html[config map], which contains the service's configuration which is then exposed to the mobile application.
+
+This can be seen in the project's resources within the Openshift web console or by running the following command using the mobile CLI.
+
+```bash
+oc plugin mobile get clientconfig <clientID>
+```
+Where the _clientID_ (<clientName>-<clientType>) parameter is specified by the user.
+
+NOTE: The _clientID_ value can be retrieved by running the `oc plugin mobile get clients` command, which
+returns a list of mobile clients available and their details within the specified namespace.
+
+There is a possibility to represent the output in json format by using the *-o* flag.
+....
+oc plugin mobile get clientconfig <clientID> -- -o json
+....
+
+NOTE: When the mobile CLI is used as an oc plugin, the namespace does not have to be specified as this
+takes the current namespace selected. However, when using the mobile CLI as is, the namespace must be specified
+by using the *--namespace* flag.
+
+See https://add/link/to/video[this video] which demonstrates how to use the Custom Runtime Connector.
+
+[[provision-custom-runtime-connector-service]]
+== Provision
+Go to the OpenShift web console. Open the *Mobile* Tab > *Services* from the service catalog and select the *Custom Runtime Connector* service.
+
+This should open the Custom Runtime Connector service provision wizard.
+Press the *Next* button and provide the following configuration parameters for the service.
+
+* *Service Name (required)*: Service name to be exposed to the mobile application.
+* *Service URL (required)*: Service url where the service is running.
+* *Service JSON Configuration*: Service configuration in a valid JSON format.
+
+After the service has been provisioned, you should then be able to see the service's secret and config map created during provision
+within the project's resources.
+
+To edit the service configuration, go to *Resources* -> *Config Maps* and select the service's config map.
+Press the *[Actions]* button in the upper right corner and choose *[Edit]* or *[Edit YAML]*. This
+allows you to edit the service's configuration directly which is then exposed to your mobile application.
+
+== Deprovision
+In order to delete a provisioned Custom Runtime Connector service, select the service menu and click *Delete*. A notification should
+appear that the service has now been *Marked for Deletion*.
+
+*Deprovisioning a Custom Runtime Connector service will delete the following resources:*
+
+* secrets
+* config maps
+
+NOTE: When the deprovision finishes, the service's secret and config map will be unavailable now.
