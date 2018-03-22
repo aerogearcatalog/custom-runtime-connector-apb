@@ -26,6 +26,8 @@
   k8s_v1_config_map:
     name: '{{ SERVICE_NAME | lower }}'
     namespace: '{{ namespace }}'
+    annotations:
+      configType: json
     labels:
       name: '{{ SERVICE_NAME }}'
       mobile: enabled
