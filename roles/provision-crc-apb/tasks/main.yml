@@ -20,7 +20,7 @@
 
 - name: Creating CRC {{ crc_svc_config_name }} secrets
   k8s_v1_secret:
-    name: '{{ SERVICE_NAME | lower }}-{{ crc_svc_config_name }}'
+    name: '{{ crc_svc_config_alias }}'
     namespace: '{{ namespace }}'
     labels:
       name: '{{ SERVICE_NAME }}'
@@ -34,7 +34,7 @@
 
 - name: Creating CRC {{ crc_svc_config_name }} configmap
   k8s_v1_config_map:
-    name: '{{ SERVICE_NAME | lower }}-{{ crc_svc_config_name }}'
+    name: '{{ crc_svc_config_alias }}'
     namespace: '{{ namespace }}'
     annotations:
       configType: '{{ crc_svc_config_type }}'
@@ -53,3 +53,4 @@
     fields:
       SERVICE_NAME: "{{ SERVICE_NAME }}"
       SERVICE_URI: "{{ SERVICE_URI }}"
+  when: encode_asb_binding
