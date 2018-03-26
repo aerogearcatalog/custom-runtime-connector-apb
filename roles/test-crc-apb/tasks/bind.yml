@@ -1,0 +1,8 @@
+---
+- name: Test|Get the created CRC service/client configmaps
+  shell: oc get configmap --namespace={{ namespace }} -o name {{ item }} 2>&1
+  register: crc_configmap_exists
+  failed_when: item not in crc_configmap_exists.stdout
+  with_items:
+    - '{{ crc_svc_config_alias }}'
+    - '{{ crc_client_config_alias }}'

@@ -1,0 +1,13 @@
+- name: Test|Check that {{ crc_client_config_alias }} configmap has been removed
+  shell: oc get configmaps --namespace={{ namespace }} {{ crc_client_config_alias }} 2>&1
+  register: result
+  retries: 50
+  delay: 2
+  failed_when:
+    - '"not found" not in result.stdout'
+  until: '"not found" in result.stdout'
+
+- name: Test|Check that {{ crc_svc_config_name }} configmap still present
+  shell: oc get configmap --namespace={{ namespace }} -o name {{ crc_svc_config_alias }} 2>&1
+  register: crc_configmap_exists
+  failed_when: crc_svc_config_alias not in crc_configmap_exists.stdout

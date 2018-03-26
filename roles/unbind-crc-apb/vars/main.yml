@@ -1,0 +1,2 @@
+SERVICE_NAME: '{{ _apb_provision_creds.SERVICE_NAME }}'
+CLIENT_ID: '{{ _apb_bind_creds.CLIENT_ID }}'

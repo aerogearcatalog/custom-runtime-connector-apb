@@ -1,0 +1,22 @@
+SERVICE_NAME: 'MyService'
+SERVICE_URI: 'http://my-service.aerogear.org'
+SERVICE_CONFIG: |
+  {
+      "key" : "value",
+      "array" : [
+          { "key" : 1 },
+          { "key" : 2, "dictionary": {
+                  "a": "Apple",
+                  "b": "Butterfly",
+                  "c": "Cat",
+                  "d": "Dog"
+              } },
+          { "key" : 3 }
+      ]
+  }
+CLIENT_ID: 'MyClientId'
+_apb_service_instance_id: 'dummy_service_instance_id'
+_apb_provision_creds:
+  SERVICE_NAME: '{{ SERVICE_NAME }}'
+  SERVICE_URI: '{{ SERVICE_URI }}'
+encode_asb_binding: no

@@ -1,12 +1,12 @@
 ---
 - name: Delete CRC secrets
   k8s_v1_secret:
-    name: '{{ SERVICE_NAME | lower }}-{{ crc_svc_config_name }}'
+    name: '{{ crc_svc_config_alias }}'
     namespace: '{{ namespace }}'
     state: absent
 
 - name: Delete CRC configmap
   k8s_v1_config_map:
-    name: '{{ SERVICE_NAME | lower }}-{{ crc_svc_config_name }}'
+    name: '{{ crc_svc_config_alias }}'
     namespace: '{{ namespace }}'
     state: absent
