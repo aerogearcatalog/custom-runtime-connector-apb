@@ -11,12 +11,12 @@
 
 - name: Save CRC secrets
   k8s_v1_secret:
-    name: '{{ SERVICE_NAME | lower }}'
+    name: 'custom-runtime-connector'
     namespace: '{{ namespace }}'
     labels:
       name: '{{ SERVICE_NAME }}'
       mobile: enabled
-      serviceName: '{{ SERVICE_NAME }}'
+      serviceName: 'custom-runtime-connector'
     string_data:
       type: 'Custom Runtime Connector'
       name: '{{ SERVICE_NAME }}'
@@ -24,16 +24,29 @@
 
 - name: Creating CRC configmap
   k8s_v1_config_map:
-    name: '{{ SERVICE_NAME | lower }}'
+    name: 'custom-runtime-connector'
     namespace: '{{ namespace }}'
     annotations:
       configType: json
     labels:
       name: '{{ SERVICE_NAME }}'
       mobile: enabled
-      serviceName: '{{ SERVICE_NAME }}'
+      serviceName: 'custom-runtime-connector'
     data:
       type: 'Custom Runtime Connector'
       name: '{{ SERVICE_NAME }}'
       uri: '{{ SERVICE_URI }}'
       config: '{{ svc_json_config | to_nice_json }}'
+
+- name: Get the name of the service instance
+  shell: oc get serviceinstance --namespace={{ namespace }} -o jsonpath='{.items[?(@.spec.externalID=="{{ _apb_service_instance_id }}")].metadata.name}'
+  when: _apb_service_instance_id is defined
+  register: service_instance_name
+
+- name: Label the service instance with the service name
+  shell: oc label serviceinstance '{{ service_instance_name.stdout }}' serviceName=custom-runtime-connector --namespace={{ namespace }}
+  when: _apb_service_instance_id is defined
+
+- name: Label the service instance with mobile enabled
+  shell: oc label serviceinstance '{{ service_instance_name.stdout }}' mobile=enabled --namespace={{ namespace }}
+  when: _apb_service_instance_id is defined  
