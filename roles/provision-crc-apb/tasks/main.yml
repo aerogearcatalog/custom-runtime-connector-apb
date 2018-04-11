@@ -1,0 +1,55 @@
+---
+- name: Validate CRC JSON config
+  set_fact: svc_json_config={{ SERVICE_CONFIG | from_json }}
+  register: crc_json_config_valid
+  ignore_errors: True
+
+- asb_last_operation:
+    description: "config was not valid json. Could not provision"
+  when: crc_json_config_valid.failed
+
+- lineinfile:
+    line: 'config was not valid json. Could not provision'
+    path: '{{ crc_term_msg_filepath }}'
+    unsafe_writes: true
+  when: crc_json_config_valid.failed
+
+- fail:
+    msg: "config was not valid json. Could not provision"
+  when: crc_json_config_valid.failed
+
+- name: Creating CRC {{ crc_svc_config_name }} secrets
+  k8s_v1_secret:
+    name: '{{ SERVICE_NAME | lower }}-{{ crc_svc_config_name }}'
+    namespace: '{{ namespace }}'
+    labels:
+      name: '{{ SERVICE_NAME }}'
+      mobile: '{{ crc_svc_label_mobile }}'
+      serviceName: '{{ crc_svc_name }}'
+      serviceInstanceID: '{{ _apb_service_instance_id }}'
+    string_data:
+      type: '{{ crc_svc_type }}'
+      name: '{{ SERVICE_NAME }}'
+      uri: '{{ SERVICE_URI }}'
+
+- name: Creating CRC {{ crc_svc_config_name }} configmap
+  k8s_v1_config_map:
+    name: '{{ SERVICE_NAME | lower }}-{{ crc_svc_config_name }}'
+    namespace: '{{ namespace }}'
+    annotations:
+      configType: '{{ crc_svc_config_type }}'
+    labels:
+      name: '{{ SERVICE_NAME }}'
+      mobile: '{{ crc_svc_label_mobile }}'
+      serviceName: '{{ crc_svc_name }}'
+      serviceInstanceID: '{{ _apb_service_instance_id }}'
+    data:
+      type: '{{ crc_svc_type }}'
+      name: '{{ SERVICE_NAME }}'
+      uri: '{{ SERVICE_URI }}'
+      config: '{{ svc_json_config | to_nice_json }}'
+
+- asb_encode_binding:
+    fields:
+      SERVICE_NAME: "{{ SERVICE_NAME }}"
+      SERVICE_URI: "{{ SERVICE_URI }}"

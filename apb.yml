@@ -1,7 +1,7 @@
 version: 1.0
 name: custom-runtime-connector-apb
 description: Custom Runtime Connector
-bindable: False
+bindable: True
 async: optional
 tags:
   - mobile-service
@@ -31,3 +31,8 @@ plans:
       type: string
       display_type: textarea
       title: Service JSON Configuration
+    bind_parameters:
+    - name: CLIENT_ID
+      required: True
+      type: string
+      title: Mobile Client Id
