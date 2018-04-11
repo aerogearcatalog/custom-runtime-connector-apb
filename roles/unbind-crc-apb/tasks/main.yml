@@ -1,0 +1,6 @@
+---
+- name: Delete CRC {{ _apb_bind_creds.CLIENT_ID }} configmap
+  k8s_v1_config_map:
+    name: '{{ _apb_provision_creds.SERVICE_NAME | lower }}-{{ _apb_bind_creds.CLIENT_ID | lower }}'
+    namespace: '{{ namespace }}'
+    state: absent

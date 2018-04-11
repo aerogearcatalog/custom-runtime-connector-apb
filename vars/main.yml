@@ -1,0 +1,7 @@
+---
+crc_svc_name: 'custom-runtime-connector'
+crc_svc_type: 'Custom Runtime Connector'
+crc_svc_config_name: 'master'
+crc_svc_config_type: 'json'
+crc_svc_label_mobile: 'enabled'
+crc_term_msg_filepath: '/dev/termination-log'
