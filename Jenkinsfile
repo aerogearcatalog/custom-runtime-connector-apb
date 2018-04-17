@@ -8,20 +8,44 @@ stage('Trust') {
 }
 
 node ("ocp-slave") { 
+    def apb_container_id, pod_container_id, apb_pod_output
+    
     stage('Cleanup') {
         deleteDir()
     }
+
     stage('Cloning the repo') {
         checkout scm
     }
 
     stage('Run APB test') {
-        def test_output = sh (
-            script: 'apb test --registry-route docker-registry.default.svc:5000',
+        apb_container_id = sh (
+            script: 'docker run --detach --net=host --privileged -v $PWD:/mnt -v $HOME/.kube:/.kube -v /var/run/docker.sock:/var/run/docker.sock -u $UID docker.io/ansibleplaybookbundle/apb-tools:canary test --registry-route docker-registry.default.svc:5000',
+            returnStdout: true
+        ).trim()
+    }
+
+    stage('Watch the logs') {
+        
+        pod_container_id = sh (
+            script: "sleep 30 ; docker ps --filter since=${apb_container_id} | grep 'entrypoint.sh test' | awk '{print \$1}'",
             returnStdout: true
         ).trim()
         
-        if (test_output.contains("Pod phase Failed")) {
+        sh "docker logs -f ${pod_container_id}"
+    }
+    
+    stage('Get APB container logs and evaluate test result') {
+
+        apb_pod_output = sh (
+            // We must wait for APB container to finish. Otherwise `docker logs` command does not work.
+            script: "sleep 10 ; docker logs -f ${apb_container_id}",
+            returnStdout: true
+        ).trim()
+
+        echo apb_pod_output
+        
+        if ( apb_pod_output.contains("Pod phase Failed") ) {
             error("APB test failed.")
         }
     }
