@@ -25,8 +25,8 @@
     msg: "config was not valid json. Could not bind"
   when: crc_json_config_valid.failed
 
-- name: Creating CRC {{ CLIENT_ID }} configmap
-  k8s_v1_config_map:
+- name: Creating CRC {{ CLIENT_ID }} secret
+  k8s_v1_secret:
     name: '{{ crc_client_config_alias }}'
     namespace: '{{ namespace }}'
     annotations:
@@ -37,7 +37,8 @@
       serviceName: '{{ crc_svc_name }}'
       serviceInstanceID: '{{ _apb_service_instance_id }}'
       mobileClientId: '{{ CLIENT_ID }}'
-    data:
+      mobile-client: "enabled"
+    string_data:
       type: '{{ crc_svc_type }}'
       name: '{{ SERVICE_NAME }}'
       uri: '{{ SERVICE_URI }}'
