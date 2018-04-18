@@ -11,18 +11,17 @@
   register: crc_json_config_valid
   ignore_errors: True
 
-- asb_last_operation:
-    description: "config was not valid json. Could not bind"
-  when: crc_json_config_valid.failed
+- block:
+  - asb_last_operation:
+      description: "config was not valid json. Could not bind"
 
-- lineinfile:
-    line: 'config was not valid json. Could not bind'
-    path: '{{ crc_term_msg_filepath }}'
-    unsafe_writes: true
-  when: crc_json_config_valid.failed
+  - lineinfile:
+      line: 'config was not valid json. Could not bind'
+      path: '{{ crc_term_msg_filepath }}'
+      unsafe_writes: true
 
-- fail:
-    msg: "config was not valid json. Could not bind"
+  - fail:
+      msg: "config was not valid json. Could not bind"
   when: crc_json_config_valid.failed
 
 - name: Creating CRC {{ CLIENT_ID }} configmap

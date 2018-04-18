@@ -4,18 +4,17 @@
   register: crc_json_config_valid
   ignore_errors: True
 
-- asb_last_operation:
-    description: "config was not valid json. Could not provision"
-  when: crc_json_config_valid.failed
+- block:
+  - asb_last_operation:
+      description: "config was not valid json. Could not provision"
 
-- lineinfile:
-    line: 'config was not valid json. Could not provision'
-    path: '{{ crc_term_msg_filepath }}'
-    unsafe_writes: true
-  when: crc_json_config_valid.failed
+  - lineinfile:
+      line: 'config was not valid json. Could not provision'
+      path: '{{ crc_term_msg_filepath }}'
+      unsafe_writes: true
 
-- fail:
-    msg: "config was not valid json. Could not provision"
+  - fail:
+      msg: "config was not valid json. Could not provision"
   when: crc_json_config_valid.failed
 
 - name: Creating CRC {{ crc_svc_config_name }} secrets
