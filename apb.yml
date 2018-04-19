@@ -5,6 +5,7 @@ bindable: True
 async: optional
 tags:
   - mobile-service
+  - mobile-client-enabled
 metadata:
   displayName: Custom Runtime Connector
   console.openshift.io/iconClass: fa fa-plug
