@@ -34,7 +34,7 @@ plans:
       title: Service JSON Configuration
       required: False
     bind_parameters:
-    - name: CLIENT_ID
+    - name: CLIENT_NAME
       type: string
-      title: Mobile Client Id
+      title: Mobile Client Name
       required: True
