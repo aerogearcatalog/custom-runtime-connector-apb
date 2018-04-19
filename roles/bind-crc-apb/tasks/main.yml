@@ -35,8 +35,7 @@
       mobile: '{{ crc_svc_label_mobile }}'
       serviceName: '{{ crc_svc_name }}'
       serviceInstanceID: '{{ _apb_service_instance_id }}'
-      mobileClientId: '{{ CLIENT_ID }}'
-      mobile-client: "enabled"
+      clientId: '{{ CLIENT_ID }}'
     string_data:
       type: '{{ crc_svc_type }}'
       name: '{{ SERVICE_NAME }}'
