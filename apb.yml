@@ -28,7 +28,7 @@ plans:
       title: Service URL
       required: True
     - name: SERVICE_CONFIG
-      default: {}
+      default: '{}'
       type: string
       display_type: textarea
       title: Service JSON Configuration
