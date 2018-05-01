@@ -1,5 +1,5 @@
 ---
-- name: Delete CRC {{ _apb_bind_creds.CLIENT_NAME }} configmap
+- name: Delete CRC {{ _apb_bind_creds.CLIENT_ID }} configmap
   k8s_v1_secret:
     name: '{{ crc_client_config_alias }}'
     namespace: '{{ namespace }}'
