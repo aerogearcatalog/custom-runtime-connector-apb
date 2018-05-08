@@ -17,7 +17,9 @@ plans:
   - name: default
     description: This default plan deploys custom-runtime-connector-apb
     free: True
-    metadata: {}
+    metadata:
+      mobileclient_bind_parameters_data:
+        - '{"name": "CLIENT_ID", "value": "metadata.name", "type": "path"}'
     parameters:
     - name: SERVICE_NAME
       type: string
