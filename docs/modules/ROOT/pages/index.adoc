@@ -1,1 +1,9 @@
 = Getting Started 
+
+== About the Custom Runtime Connector Service
+
+// tag::about-custom[]
+
+The Custom Runtime Connector Service allows you associate your backend application with AeroGear Mobile Services. For example, after provisioning this service, you can protect your backend application using the Auth Service.
+
+// end::about-custom[]
