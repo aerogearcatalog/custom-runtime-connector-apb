@@ -6,5 +6,5 @@ crc_svc_config_type: 'json'
 crc_svc_label_mobile: 'enabled'
 crc_term_msg_filepath: '/dev/termination-log'
 crc_svc_config_alias: '{{ SERVICE_NAME | lower }}-{{ crc_svc_config_name }}'
-crc_client_config_alias: '{{ SERVICE_NAME | lower }}-{{ CLIENT_NAME | lower }}'
+crc_client_config_alias: '{{ SERVICE_NAME | lower }}-{{ CLIENT_ID | lower }}'
 encode_asb_binding: yes
