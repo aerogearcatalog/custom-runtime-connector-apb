@@ -38,7 +38,7 @@ Press the *Next* button and provide the following configuration parameters for t
 * *Service URL (required)*: Service url where the service is running.
 * *Service JSON Configuration*: Service configuration in a valid JSON format.
 
-// end::provisioning-metrics[]
+// end::provisioning-custom[]
 
 After the service has been provisioned, you should then be able to see the service's secret and config map created during provision
 within the project's resources.
