@@ -1,5 +1,5 @@
 [[custom-runtime-connector-service]]
-= Custom Runtime Connector
+= Provisioning the Custom Runtime Connector Service
 
 The Custom Runtime Connector (CRC) allows an existing custom service to be exposed to a mobile application.
 This creates a https://docs.openshift.com/enterprise/3.2/dev_guide/configmaps.html[config map], which contains the service's configuration which is then exposed to the mobile application.
@@ -32,9 +32,13 @@ Go to the OpenShift web console. Open the *Mobile* Tab > *Services* from the ser
 This should open the Custom Runtime Connector service provision wizard.
 Press the *Next* button and provide the following configuration parameters for the service.
 
+// tag::provisioning-custom[]
+
 * *Service Name (required)*: Service name to be exposed to the mobile application.
 * *Service URL (required)*: Service url where the service is running.
 * *Service JSON Configuration*: Service configuration in a valid JSON format.
+
+// end::provisioning-metrics[]
 
 After the service has been provisioned, you should then be able to see the service's secret and config map created during provision
 within the project's resources.
