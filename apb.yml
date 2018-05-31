@@ -7,11 +7,15 @@ tags:
   - mobile-service
   - mobile-client-enabled
 metadata:
-  displayName: Custom Runtime Connector
   console.openshift.io/iconClass: fa fa-plug
+  displayName: Custom Runtime Connector
+  dependencies: []
   documentationUrl: "http://www.aerogear.org/custom-runtime-connector/documentation.html"
   providerDisplayName: "Red Hat, Inc."
-  dependencies: []
+  sdk-docs-android: "https://docs.aerogear.org"
+  sdk-docs-cordova: "https://docs.aerogear.org"
+  sdk-docs-ios: "https://docs.aerogear.org"
+  sdk-docs-xamarin: "https://docs.aerogear.org"
   serviceName: custom-runtime-connector
 plans:
   - name: default
