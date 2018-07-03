@@ -16,7 +16,4 @@ SERVICE_CONFIG: |
   }
 CLIENT_ID: 'MyClientID'
 _apb_service_instance_id: 'dummy_service_instance_id'
-_apb_provision_creds:
-  SERVICE_NAME: '{{ SERVICE_NAME }}'
-  SERVICE_URI: '{{ SERVICE_URI }}'
 encode_asb_binding: no

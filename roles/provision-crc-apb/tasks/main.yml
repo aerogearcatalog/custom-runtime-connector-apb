@@ -4,18 +4,10 @@
   register: crc_json_config_valid
   ignore_errors: True
 
-- block:
-  - asb_last_operation:
-      description: "config was not valid json. Could not provision"
-
-  - lineinfile:
-      line: 'config was not valid json. Could not provision'
-      path: '{{ crc_term_msg_filepath }}'
-      unsafe_writes: true
-
-  - fail:
-      msg: "config was not valid json. Could not provision"
-  when: crc_json_config_valid.failed
+- import_tasks: update_status.yml
+  vars:
+    message: config was not valid json. Could not provision
+    result: '{{ crc_json_config_valid }}'
 
 - name: Creating CRC {{ crc_svc_config_name }} secrets
   k8s_v1_secret:
@@ -30,6 +22,12 @@
       type: '{{ crc_svc_type }}'
       name: '{{ SERVICE_NAME }}'
       uri: '{{ SERVICE_URI }}'
+  register: crc_secrets_created
+
+- import_tasks: update_status.yml
+  vars:
+    message: CRC {{ crc_svc_config_name }} secrets created. Continue...
+    result: '{{ crc_secrets_created }}'
 
 - name: Creating CRC {{ crc_svc_config_name }} configmap
   k8s_v1_config_map:
@@ -47,9 +45,32 @@
       name: '{{ SERVICE_NAME }}'
       uri: '{{ SERVICE_URI }}'
       config: '{{ svc_json_config | to_nice_json }}'
+  register: crc_configmap_created
 
-- asb_encode_binding:
+- import_tasks: update_status.yml
+  vars:
+    message: CRC {{ crc_svc_config_name }} configmap created. Continue...
+    result: '{{crc_configmap_created }}'
+
+- name: Encode {{ SERVICE_NAME }} APB provision credentials
+  asb_encode_binding:
     fields:
       SERVICE_NAME: "{{ SERVICE_NAME }}"
       SERVICE_URI: "{{ SERVICE_URI }}"
   when: encode_asb_binding
+  register: crc_encode_bindings
+
+- import_tasks: update_status.yml
+  vars:
+    message: Successfully provisioned CRC
+    result: "{{ crc_encode_bindings }}"
+  when: encode_asb_binding
+
+- name: Populate {{ SERVICE_NAME }} APB provision credentials
+  set_fact:
+    _apb_provision_creds: "{{ _apb_provision_creds|default({}) | combine( {item.name: item.value} ) }}"
+  with_items:
+    - {name: SERVICE_NAME, value: '{{ SERVICE_NAME }}'}
+    - {name: SERVICE_URI, value: '{{ SERVICE_URI }}'}
+  when: not encode_asb_binding
+  no_log: yes

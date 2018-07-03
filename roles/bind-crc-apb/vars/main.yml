@@ -1,2 +1,0 @@
-SERVICE_NAME: '{{ _apb_provision_creds.SERVICE_NAME }}'
-SERVICE_URI: '{{ _apb_provision_creds.SERVICE_URI }}'

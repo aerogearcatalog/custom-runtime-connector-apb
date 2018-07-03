@@ -5,22 +5,21 @@
   connection: local
   vars_files:
   - /opt/ansible/vars/main.yml
+  - /opt/ansible/vars/test.yml
 
   roles:
   - role: ansible.kubernetes-modules
     install_python_requirements: no
   - role: ansibleplaybookbundle.asb-modules
   post_tasks:
-  - name: Load default variables for testing
-    include_vars: /opt/ansible/roles/test-crc-apb/vars/main.yml
   - name: Create project for namespace
     openshift_v1_project:
       name: '{{ namespace }}'
   - include_role: name=provision-crc-apb
-  - include_tasks: /opt/ansible/roles/test-crc-apb/tasks/provision.yml
+  - include_role: name=test-crc-apb tasks_from=provision.yml
   - include_role: name=bind-crc-apb
-  - include_tasks: /opt/ansible/roles/test-crc-apb/tasks/bind.yml
+  - include_role: name=test-crc-apb tasks_from=bind.yml
   - include_role: name=unbind-crc-apb
-  - include_tasks: /opt/ansible/roles/test-crc-apb/tasks/unbind.yml
+  - include_role: name=test-crc-apb tasks_from=unbind.yml
   - include_role: name=deprovision-crc-apb
-  - include_tasks: /opt/ansible/roles/test-crc-apb/tasks/deprovision.yml
+  - include_role: name=test-crc-apb tasks_from=deprovision.yml
