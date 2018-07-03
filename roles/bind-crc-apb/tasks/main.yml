@@ -1,5 +1,5 @@
 ---
-- name: Retrieve {{ SERVICE_NAME }} configuration
+- name: Retrieve {{ _apb_provision_creds.SERVICE_NAME }} configuration
   shell: >
     oc get configmaps/{{ crc_svc_config_alias }}
     -n {{ namespace }}
@@ -31,7 +31,7 @@
     annotations:
       configType: '{{ crc_svc_config_type }}'
     labels:
-      name: '{{ SERVICE_NAME }}'
+      name: '{{ _apb_provision_creds.SERVICE_NAME }}'
       mobile: '{{ crc_svc_label_mobile }}'
       serviceName: '{{ crc_svc_name }}'
       serviceInstanceID: '{{ _apb_service_instance_id }}'
@@ -39,11 +39,20 @@
       mobile-client: '{{ crc_svc_label_mobile }}'
     string_data:
       type: '{{ crc_svc_type }}'
-      name: '{{ SERVICE_NAME }}'
-      uri: '{{ SERVICE_URI }}'
+      name: '{{ _apb_provision_creds.SERVICE_NAME }}'
+      uri: '{{ _apb_provision_creds.SERVICE_URI }}'
       config: '{{ svc_json_config | to_nice_json }}'
 
-- asb_encode_binding:
+- name: Encode {{ CLIENT_ID }} APB bind credentials
+  asb_encode_binding:
     fields:
       CLIENT_ID: "{{ CLIENT_ID }}"
   when: encode_asb_binding
+
+- name: Populate {{ CLIENT_ID }} APB bind credentials
+  set_fact:
+    _apb_bind_creds: "{{ _apb_bind_creds|default({}) | combine( {item.name: item.value} ) }}"
+  with_items:
+    - {name: CLIENT_ID, value: '{{ CLIENT_ID }}'}
+  when: not encode_asb_binding
+  no_log: yes
