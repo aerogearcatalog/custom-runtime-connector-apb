@@ -10,7 +10,7 @@ metadata:
   console.openshift.io/iconClass: fa fa-plug
   displayName: Runtime Connector
   dependencies: []
-  documentationUrl: "http://www.aerogear.org/external/apb/custom-runtime-connector.html"
+  documentationUrl: "http://docs.aerogear.org/external/apb/custom-runtime-connector.html"
   providerDisplayName: "Red Hat, Inc."
   sdk-docs-android: "https://docs.aerogear.org"
   sdk-docs-cordova: "https://docs.aerogear.org"
