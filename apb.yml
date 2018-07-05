@@ -12,10 +12,10 @@ metadata:
   dependencies: []
   documentationUrl: "http://docs.aerogear.org/external/apb/custom-runtime-connector.html"
   providerDisplayName: "Red Hat, Inc."
-  sdk-docs-android: "https://docs.aerogear.org"
-  sdk-docs-cordova: "https://docs.aerogear.org"
-  sdk-docs-ios: "https://docs.aerogear.org"
-  sdk-docs-xamarin: "https://docs.aerogear.org"
+  sdk-docs-android: "https://docs.aerogear.org/external/apb/runtime-connector/android.html"
+  sdk-docs-cordova: "https://docs.aerogear.org/external/apb/runtime-connector/cordova.html"
+  sdk-docs-ios: "https://docs.aerogear.org/external/apb/runtime-connector/ios.html"
+  sdk-docs-xamarin: "https://docs.aerogear.org/external/apb/runtime-connector/xamarin.html"
   serviceName: custom-runtime-connector
 plans:
   - name: default
