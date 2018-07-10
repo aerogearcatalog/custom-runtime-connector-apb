@@ -11,7 +11,7 @@
 
 - name: Creating CRC {{ crc_svc_config_name }} secrets
   k8s_v1_secret:
-    name: '{{ crc_svc_config_alias }}'
+    name: '{{ crc_svc_sercret_alias }}'
     namespace: '{{ namespace }}'
     labels:
       name: '{{ SERVICE_NAME }}'
@@ -26,7 +26,7 @@
 
 - import_tasks: update_status.yml
   vars:
-    message: CRC {{ crc_svc_config_name }} secrets created. Continue...
+    message: CRC {{ crc_svc_sercret_alias }} secret created. Continue...
     result: '{{ crc_secrets_created }}'
 
 - name: Creating CRC {{ crc_svc_config_name }} configmap
@@ -49,7 +49,7 @@
 
 - import_tasks: update_status.yml
   vars:
-    message: CRC {{ crc_svc_config_name }} configmap created. Continue...
+    message: CRC {{ crc_svc_config_alias }} configmap created. Continue...
     result: '{{crc_configmap_created }}'
 
 - name: Encode {{ SERVICE_NAME }} APB provision credentials

@@ -1,5 +1,5 @@
 ---
-- name: Retrieve {{ _apb_provision_creds.SERVICE_NAME }} configuration
+- name: Retrieve {{ SERVICE_NAME }} configuration
   shell: >
     oc get configmaps/{{ crc_svc_config_alias }}
     -n {{ namespace }}
@@ -11,18 +11,10 @@
   register: crc_json_config_valid
   ignore_errors: True
 
-- block:
-  - asb_last_operation:
-      description: "config was not valid json. Could not bind"
-
-  - lineinfile:
-      line: 'config was not valid json. Could not bind'
-      path: '{{ crc_term_msg_filepath }}'
-      unsafe_writes: true
-
-  - fail:
-      msg: "config was not valid json. Could not bind"
-  when: crc_json_config_valid.failed
+- import_tasks: update_status.yml
+  vars:
+    message: config was not valid json. Could not provision
+    result: '{{ crc_json_config_valid }}'
 
 - name: Creating CRC {{ CLIENT_ID }} secret
   k8s_v1_secret:
@@ -31,7 +23,7 @@
     annotations:
       configType: '{{ crc_svc_config_type }}'
     labels:
-      name: '{{ _apb_provision_creds.SERVICE_NAME }}'
+      name: '{{ SERVICE_NAME }}'
       mobile: '{{ crc_svc_label_mobile }}'
       serviceName: '{{ crc_svc_name }}'
       serviceInstanceID: '{{ _apb_service_instance_id }}'
@@ -39,14 +31,27 @@
       mobile-client: '{{ crc_svc_label_mobile }}'
     string_data:
       type: '{{ crc_svc_type }}'
-      name: '{{ _apb_provision_creds.SERVICE_NAME }}'
-      uri: '{{ _apb_provision_creds.SERVICE_URI }}'
+      name: '{{ SERVICE_NAME }}'
+      uri: '{{ SERVICE_URI }}'
       config: '{{ svc_json_config | to_nice_json }}'
+  register: crc_secrets_created
+
+- import_tasks: update_status.yml
+  vars:
+    message: CRC {{ crc_client_secret_alias }} secret created. Continue...
+    result: '{{ crc_secrets_created }}'
 
 - name: Encode {{ CLIENT_ID }} APB bind credentials
   asb_encode_binding:
     fields:
       CLIENT_ID: "{{ CLIENT_ID }}"
+  when: encode_asb_binding
+  register: crc_encode_bindings
+
+- import_tasks: update_status.yml
+  vars:
+    message: Successfully bound CRC
+    result: "{{ crc_encode_bindings }}"
   when: encode_asb_binding
 
 - name: Populate {{ CLIENT_ID }} APB bind credentials
