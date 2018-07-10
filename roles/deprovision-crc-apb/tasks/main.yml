@@ -6,19 +6,9 @@
     state: absent
   register: crc_secret_deleted
 
-- import_tasks: update_status.yml
-  vars:
-    message: 'CRC secret {{ crc_svc_config_alias }} deleted. Continue...'
-    result: '{{ crc_secret_deleted }}'
-
 - name: Delete CRC configmap
   k8s_v1_config_map:
     name: '{{ crc_svc_config_alias }}'
     namespace: '{{ namespace }}'
     state: absent
   register: crc_configmap_deleted
-
-- import_tasks: update_status.yml
-  vars:
-    message: 'CRC configmap {{ crc_svc_config_alias }} deleted. Continue...'
-    result: '{{ crc_configmap_deleted }}'
