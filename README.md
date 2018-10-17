@@ -1,3 +1,8 @@
+# Deprecated
+
+This component is now deprecated.
+
+
 # Custom Runtime Connector
 
 
